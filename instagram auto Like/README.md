@@ -45,7 +45,7 @@ This Python script automatically likes posts on an Instagram profile. It opens a
    Execute the Python script using:
 
    ```bash
-   python clicks.py
+   python igautolikes.py
    ```
 
 2. **Follow the prompts:**
