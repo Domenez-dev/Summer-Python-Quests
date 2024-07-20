@@ -23,15 +23,19 @@ keyboard.add_hotkey('esc', stop_loop)
 chrome_options = Options()
 chrome_options.add_argument("user-data-dir=C:\\Users\\Zakkye\\AppData\\Local\\Google\\Chrome\\User Data")  # Change this to your user data directory
 chrome_options.add_argument("profile-directory=Profile 1")  # Change this to your profile directory name
+chrome_options.add_argument("--disable-extensions")  # Disable extensions
+chrome_options.add_argument("--remote-debugging-port=9222")  # Enable remote debugging
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")
 
 # Initialize the WebDriver
 driver_path = 'chromedriver/chromedriver.exe'
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
-
-# Open Instagram (assume the user is already logged in)
-driver.get('https://www.instagram.com/')
+print('befour chrome opems')
 time.sleep(5)  # Wait for the page to load
+print('after chrome opems')
 
 # Navigate to the specified user's profile (replace with the desired username)
 profile_url = 'https://www.instagram.com/usthb_university/'  # Replace with the actual profile URLs
@@ -62,7 +66,7 @@ for _ in range(num_to_like):
     
     try:
         # Locate the like button using Selenium
-        like_button = driver.find_element(By.XPATH, "//svg[@aria-label='Like']")
+        like_button = driver.find_element(By.XPATH, "//svg[@title='Like']")
         
         # Get the location of the like button
         location = like_button.location
@@ -80,11 +84,6 @@ for _ in range(num_to_like):
 
     except Exception as e:
         print(f"Error liking post {_ + 1}: {e}")
-
-    # Navigate to the next post using the right arrow key
-    if _ < num_to_like - 1:
-        pyautogui.press('right')
-        time.sleep(2)
 
     # Navigate to the next post using the right arrow key
     if _ < num_to_like - 1:
