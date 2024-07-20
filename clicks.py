@@ -19,11 +19,13 @@ def stop_loop():
 # Set up the hotkey to stop the loop
 keyboard.add_hotkey('esc', stop_loop)
 
-# Initialize the WebDriver (make sure the path to the WebDriver is correct)
-driver_path = 'chromedriver/chromedriver.exe'
+# Set up Chrome options to use a specific user profile
 chrome_options = Options()
-chrome_options.add_argument("--start-maximized")  # Start the browser maximized
+chrome_options.add_argument("user-data-dir=C:\\Users\\Zakkye\\AppData\\Local\\Google\\Chrome\\User Data")  # Change this to your user data directory
+chrome_options.add_argument("profile-directory=Profile 1")  # Change this to your profile directory name
 
+# Initialize the WebDriver
+driver_path = 'chromedriver/chromedriver.exe'
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -32,7 +34,7 @@ driver.get('https://www.instagram.com/')
 time.sleep(5)  # Wait for the page to load
 
 # Navigate to the specified user's profile (replace with the desired username)
-profile_url = 'https://www.instagram.com/usthb_university/'  # Replace with the actual profile URL
+profile_url = 'https://www.instagram.com/usthb_university/'  # Replace with the actual profile URLs
 driver.get(profile_url)
 time.sleep(5)
 
@@ -55,27 +57,39 @@ for _ in range(num_to_like):
         first_post.click()
         time.sleep(2)
 
-    # Locate the like button using Selenium
-    like_button = driver.find_element(By.XPATH, "//svg[@aria-label='Like']")
+    # Ensure the post is fully loaded
+    time.sleep(2)
     
-    # Get the location of the like button
-    location = like_button.location
-    size = like_button.size
+    try:
+        # Locate the like button using Selenium
+        like_button = driver.find_element(By.XPATH, "//svg[@aria-label='Like']")
+        
+        # Get the location of the like button
+        location = like_button.location
+        size = like_button.size
 
-    # Calculate the coordinates to click on
-    x = location['x'] + size['width'] / 2
-    y = location['y'] + size['height'] / 2
+        # Calculate the coordinates to click on
+        x = location['x'] + size['width'] / 2
+        y = location['y'] + size['height'] / 2
 
-    # Move the mouse to the like button and click it
-    pyautogui.moveTo(x, y, duration=1)
-    pyautogui.click()
+        # Move the mouse to the like button and click it
+        pyautogui.moveTo(x, y, duration=1)
+        pyautogui.click()
 
-    print(f"Liked post {_ + 1}")
+        print(f"Liked post {_ + 1}")
+
+    except Exception as e:
+        print(f"Error liking post {_ + 1}: {e}")
 
     # Navigate to the next post using the right arrow key
     if _ < num_to_like - 1:
         pyautogui.press('right')
-        time.sleep(1)
+        time.sleep(2)
+
+    # Navigate to the next post using the right arrow key
+    if _ < num_to_like - 1:
+        pyautogui.press('right')
+        time.sleep(2)
 
 print("Done!")
 
