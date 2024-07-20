@@ -36,7 +36,7 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 time.sleep(3)  # Wait for the page to load
 
 # Navigate to the specified user's profile (replace with the desired username)
-profile_url = 'https://www.instagram.com/usthb_university/'  # Replace with the actual profile URLs
+profile_url = 'https://www.instagram.com/usthb_university/'
 driver.get(profile_url)
 time.sleep(3)
 
