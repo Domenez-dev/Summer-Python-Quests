@@ -20,59 +20,64 @@ def stop_loop():
 keyboard.add_hotkey('esc', stop_loop)
 
 # Initialize the WebDriver (make sure the path to the WebDriver is correct)
-driver_path = 'path/to/chromedriver'
+driver_path = 'chromedriver/chromedriver.exe'
 chrome_options = Options()
 chrome_options.add_argument("--start-maximized")  # Start the browser maximized
 
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Open Instagram and login (replace with your credentials)
-driver.get('https://www.instagram.com/accounts/login/')
-time.sleep(2)
+# Open Instagram (assume the user is already logged in)
+driver.get('https://www.instagram.com/')
+time.sleep(5)  # Wait for the page to load
 
-username = driver.find_element(By.NAME, 'username')
-password = driver.find_element(By.NAME, 'password')
-
-username.send_keys('your_username')
-password.send_keys('your_password')
-
-login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
-login_button.click()
-
-time.sleep(5)  # Wait for the login to complete
-
-# Navigate to a post (replace with the URL of the post you want to like)
-post_url = 'https://www.instagram.com/p/xxxxxxxxxxx/'
-driver.get(post_url)
+# Navigate to the specified user's profile (replace with the desired username)
+profile_url = 'https://www.instagram.com/usthb_university/'  # Replace with the actual profile URL
+driver.get(profile_url)
 time.sleep(5)
 
-# Locate the like button using Selenium
-like_button = driver.find_element(By.XPATH, "//svg[@aria-label='Like']")
+# Get the number of posts
+num_posts_elem = driver.find_element(By.XPATH, "//span[@class='_ac2a']")
+num_posts = int(num_posts_elem.text.replace(',', ''))
+print(f'Total number of posts: {num_posts}')
 
-# Get the location of the like button
-location = like_button.location
-size = like_button.size
+# Prompt the user for the number of posts to like
+num_to_like = int(input(f'Enter the number of posts you want to like (max {num_posts}): '))
 
-# Calculate the coordinates to click on
-x = location['x'] + size['width'] / 2
-y = location['y'] + size['height'] / 2
+# Like the specified number of posts
+for _ in range(num_to_like):
+    if stop_flag:
+        break
 
-# Move the mouse to the like button and click it
-pyautogui.moveTo(x, y, duration=1)
-pyautogui.click()
+    # Find the first post and click it to open
+    if _ == 0:
+        first_post = driver.find_element(By.XPATH, "//div[@class='_aagw']")
+        first_post.click()
+        time.sleep(2)
 
-print("Liked the post!")
+    # Locate the like button using Selenium
+    like_button = driver.find_element(By.XPATH, "//svg[@aria-label='Like']")
+    
+    # Get the location of the like button
+    location = like_button.location
+    size = like_button.size
+
+    # Calculate the coordinates to click on
+    x = location['x'] + size['width'] / 2
+    y = location['y'] + size['height'] / 2
+
+    # Move the mouse to the like button and click it
+    pyautogui.moveTo(x, y, duration=1)
+    pyautogui.click()
+
+    print(f"Liked post {_ + 1}")
+
+    # Navigate to the next post using the right arrow key
+    if _ < num_to_like - 1:
+        pyautogui.press('right')
+        time.sleep(1)
+
+print("Done!")
 
 # Close the browser
 driver.quit()
-
-# Run a loop with the ability to stop using the hotkey
-for _ in range(10):  # Replace with the desired number of repetitions
-    if stop_flag:
-        break
-    pyautogui.moveTo(x, y, duration=1)
-    pyautogui.click()
-    time.sleep(random.uniform(0.5, 1.5))
-
-print("Done!")
