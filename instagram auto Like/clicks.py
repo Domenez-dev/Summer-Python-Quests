@@ -50,7 +50,7 @@ username = input('Enter the Instagram username you want to like posts from: ')
 # Open Instagram and navigate to the specified user's profile
 profile_url = f'https://www.instagram.com/{username}/'
 driver.get(profile_url)
-time.sleep(5 * speed)  # Wait for the page to load
+time.sleep(6 / speed)  # Wait for the page to load
 
 # Get the number of posts
 num_posts_elem = driver.find_element(By.XPATH, "//span[@class='_ac2a']")
@@ -58,8 +58,6 @@ num_posts = int(num_posts_elem.text.replace(',', ''))
 print(f'Total number of posts: {num_posts}')
 
 # Prompt the user for the number of posts to like
-num_to_like = int(input(f'Enter the number of posts you want to like (max {num_posts}): '))
-
 num_to_like = int(input(f'Enter the number of posts you want to like (max {num_posts}): '))
 
 # Capture the screen
@@ -77,10 +75,10 @@ for _ in range(num_to_like):
     if _ == 0:
         first_post = driver.find_element(By.XPATH, "//div[@class='_aagw']")
         first_post.click()
-        time.sleep(2 * speed)
+        time.sleep(2 / speed)
 
     # Ensure the post is fully loaded
-    time.sleep(2 * speed)
+    time.sleep(2 / speed)
     
     try:
         # Locate the like button using Selenium
@@ -106,7 +104,7 @@ for _ in range(num_to_like):
     # Navigate to the next post using the right arrow key
     if _ < num_to_like - 1:
         pyautogui.press('right')
-        time.sleep(2 * speed)
+        time.sleep(2 / speed)
 
 print("Done!")
 
