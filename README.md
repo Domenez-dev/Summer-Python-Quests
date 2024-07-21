@@ -6,13 +6,13 @@ Welcome to the Python Projects Repository! This repository contains a collection
 
 The repository includes the following projects:
 
-| Project Title         | Description                                             | Link                                   |
-|-----------------------|---------------------------------------------------------|----------------------------------------|
-| **Instagram Auto Like Bot** | Automatically likes posts on an Instagram profile.    | [Instagram Auto Like Bot](instagram%20auto%20like/README.md)
+| Project Title               | Description                                        | Link                                                         |
+| --------------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| **Instagram Auto Like Bot** | Automatically likes posts on an Instagram profile. | [Instagram Auto Like Bot](instagram%20auto%20like/README.md) |
 
-| **YouTube Downloader** | Downloads videos from YouTube using a URL.             | [YouTube Downloader] |
-| **Tic-Tac-Toe**       | A simple command-line Tic-Tac-Toe game.                 | [Tic-Tac-Toe] |
-| **Auto Email Bot**    | Sends automated emails based on specified conditions.  | [Auto Email Bot] |
+| **Tic-Tac-Toe** | A simple command-line Tic-Tac-Toe game. | [Tic-Tac-Toe](tictactoe/README.md) |
+| **YouTube Downloader** | Downloads videos from YouTube using a URL. | [YouTube Downloader] |
+| **Auto Email Bot** | Sends automated emails based on specified conditions. | [Auto Email Bot] |
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ To get started with any of the projects, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/domenez25/Summer-Python-Quest.git
+   git clone https://github.com/domenez25/Summer-Python-Quests.git
    cd python-projects
    ```
 
