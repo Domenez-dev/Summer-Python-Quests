@@ -9,7 +9,6 @@ The repository includes the following projects:
 | Project Title               | Description                                        | Link                                                         |
 | --------------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
 | **Instagram Auto Like Bot** | Automatically likes posts on an Instagram profile. | [Instagram Auto Like Bot](instagram%20auto%20like/README.md) |
-
 | **Tic-Tac-Toe** | A simple command-line Tic-Tac-Toe game. | [Tic-Tac-Toe](tictactoe/README.md) |
 | **YouTube Downloader** | Downloads videos from YouTube using a URL. | [YouTube Downloader] |
 | **Auto Email Bot** | Sends automated emails based on specified conditions. | [Auto Email Bot] |
