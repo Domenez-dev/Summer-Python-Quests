@@ -1,15 +1,11 @@
-import os
+import tkinter as tk
+from tkinter import messagebox
 
-def print_board(board):
-    os.system('clear' if os.name == 'posix' else 'cls')
-    print(f" {board[0]} | {board[1]} | {board[2]} ")
-    print("---|---|---")
-    print(f" {board[3]} | {board[4]} | {board[5]} ")
-    print("---|---|---")
-    print(f" {board[6]} | {board[7]} | {board[8]} ")
+def print_board():
+    for i in range(9):
+        buttons[i].config(text=board[i])
 
 def check_winner(board):
-    # Check rows, columns, and diagonals for a win
     for i in range(3):
         if board[i] == board[i + 3] == board[i + 6] != ' ':
             return True
@@ -22,37 +18,35 @@ def check_winner(board):
 def is_board_full(board):
     return ' ' not in board
 
+def make_move(index):
+    global player
+    if board[index] == ' ':
+        board[index] = player
+        print_board()
+        if check_winner(board):
+            messagebox.showinfo("Game Over", f"Player {player} wins!")
+            window.quit()
+        elif is_board_full(board):
+            messagebox.showinfo("Game Over", "It's a tie!")
+            window.quit()
+        player = 'O' if player == 'X' else 'X'
+    else:
+        messagebox.showwarning("Invalid Move", "This spot is already taken.")
+
+def create_buttons():
+    for i in range(9):
+        button = tk.Button(window, text=' ', width=10, height=3, command=lambda i=i: make_move(i))
+        button.grid(row=i//3, column=i%3)
+        buttons.append(button)
+
+window = tk.Tk()
+window.title("Tic-Tac-Toe")
+
 board = [' '] * 9
 player = 'X'
+buttons = []
 
-while True:
-    print_board(board)
+create_buttons()
+print_board()
 
-    # Get the player's move
-    while True:
-        try:
-            move = int(input(f"Player {player}, enter your move (1-9): ")) - 1
-            if 0 <= move <= 8 and board[move] == ' ':
-                break
-            else:
-                print("Invalid move. Try again.")
-        except ValueError:
-            print("Invalid input. Enter a number between 1 and 9.")
-
-    # Make the move
-    board[move] = player
-
-    # Check for a winner or a tie
-    if check_winner(board):
-        print_board(board)
-        print(f"Player {player} wins!")
-        void = input()
-        break
-    elif is_board_full(board):
-        print_board(board)
-        print("It's a tie!")
-        void = input()
-        break
-
-    # Switch to the other player
-    player = 'O' if player == 'X' else 'X'
+window.mainloop()
