@@ -6,12 +6,18 @@ Welcome to the Python Projects Repository! This repository contains a collection
 
 The repository includes the following projects:
 
-| Project Title               | Description                                        | Link                                                         |
-| --------------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
-| **Instagram Auto Like Bot** | Automatically likes posts on an Instagram profile. | [Instagram Auto Like Bot](instagram%20auto%20like/README.md) |
-| **Tic-Tac-Toe** | A simple command-line Tic-Tac-Toe game. | [Tic-Tac-Toe](tictactoe/README.md) |
-| **YouTube Downloader** | Downloads videos from YouTube using a URL. | [YouTube Downloader](youtube_downloader/README.md) |
-| **Black Jack Game** | Play the famous casino game Black Jack with Python. | [Black Jack](Black_Jack/README.md) |
+| Project                     | Description                                        |
+| --------------------------- | -------------------------------------------------- |
+| [**Instagram Auto Like Bot**](instagram%20auto%20like/README.md) | Automatically likes posts on an Instagram profile. |
+| [**Tic-Tac-Toe**](tictactoe/README.md) | A simple command-line Tic-Tac-Toe game. |
+| [**YouTube Downloader**](youtube_downloader/README.md) | Downloads videos from YouTube using a URL. |
+| [**Black Jack Game**](Black_Jack/README.md) | Play the famous casino game Black Jack with Python. |
+
+## Future Projects
+- Terms Definitions From Wikipedia
+- qr code interactor (Create, Read)
+- spell checker
+- Content Aggregator with Django
 
 ## Getting Started
 
