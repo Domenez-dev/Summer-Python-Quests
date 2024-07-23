@@ -1,5 +1,15 @@
 import random
 import csv
+import os
+from time import sleep
+
+def clear_screen():
+    # For Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # For Unix-like systems (Linux, macOS)
+    else:
+        os.system('clear')
 
 def sign_up(username):
     print('please enter your pin: ')
@@ -22,6 +32,7 @@ def sign_up(username):
     return print()
 
 def login():
+    clear_screen
     for _ in range(3):
         username = input('Login username: ')
         user_found = False

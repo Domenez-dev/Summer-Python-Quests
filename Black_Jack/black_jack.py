@@ -1,5 +1,5 @@
 import random
-from login import login, sign_up, update_balance
+from login import login, sign_up, update_balance, clear_screen
 
 # Login in to play with your balance
 logged_user = login()
@@ -30,7 +30,7 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return f'{self.rank} of {self.suit}'
+        return f'{self.suit} {self.rank}'
 
 # Define the deck class
 class Deck:
@@ -65,7 +65,7 @@ class Hand:
 def take_bet(balance):
     while True:
         try:
-            bet = int(input('How many chips would you like to bet? '))
+            bet = int(input(f'How many chips would you like to bet? (max {balance}) '))
             if bet <= 0:
                 print('Bet must be greater than 0.')
             elif bet > balance:
@@ -91,6 +91,7 @@ def hit_or_stand(deck, hand):
         else:
             print("Sorry, please try again.")
             continue
+        clear_screen()
         break
 
 def show_some(player, dealer):
@@ -106,6 +107,7 @@ def show_all(player, dealer):
     print("Player's Hand =", player.value)
 
 # Game logic
+playing = False
 while True:
     deck = Deck()
     deck.shuffle()
@@ -118,7 +120,8 @@ while True:
     dealer_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
 
-    chips = int(logged_user['balance'])
+    if not playing:
+        chips = int(logged_user['balance'])
     bet = take_bet(chips)
 
     show_some(player_hand, dealer_hand)
@@ -154,8 +157,9 @@ while True:
 
     print(f"\nPlayer's total chips: {chips}")
     update_balance(logged_user['username'], chips)
+    new_game = input("\nWould you like to play another hand? Enter 'y' or 'n': ")
+    clear_screen()
 
-    new_game = input("Would you like to play another hand? Enter 'y' or 'n': ")
     if new_game[0].lower() == 'n':
         print("Thanks for playing!")
         break
