@@ -1,42 +1,6 @@
 import random
 import csv
 
-families = ['♠', '♥', '♣', '♦']
-numbers = {
-    'ace': 1,
-    'two': 2,
-    'three': 3,
-    'four': 4,
-    'five': 5,
-    'six': 6,
-    'seven': 7,
-    'eight': 8,
-    'nine': 9,
-    'ten': 10,
-    'jack': 10,
-    'queen': 10,
-    'king': 10    
-}
-
-def shuffle():
-    global cards
-    cards = []
-    for i in families:
-        for j in numbers:
-            cards.append(tuple((j, i)))
-
-actions = ['deal', 'hit', 'stand', 'split']
-
-def generate_card():
-    return {
-        {random.choice(families)}: {random.choice(list(numbers.keys()))}
-        }
-
-player_hand = {}
-dealer_hand = {}
-
-shuffle()
-
 def sign_up(username):
     print('please enter your pin: ')
     invalid_pin = True
@@ -86,4 +50,20 @@ def login():
                 else:
                     continue
 
-logged_user = login()
+def update_balance(username, new_balance):
+    updated = False
+    rows = []
+    with open('players.csv', 'r', newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['username'] == username:
+                row['balance'] = new_balance
+                updated = True
+            rows.append(row)
+
+    if updated:
+        with open('players.csv', 'w', newline="") as csvfile:
+            fieldnames = ['username', 'pin', 'balance']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)

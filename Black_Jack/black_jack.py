@@ -1,10 +1,27 @@
 import random
+from login import login, sign_up, update_balance
+
+# Login in to play with your balance
+logged_user = login()
 
 # Define the suits and ranks
-suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+suits = ['♥', '♦', '♣', '♠']
 ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
-values = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
-          'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
+values = {
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    '10': 10,
+    'Jack': 10,
+    'Queen': 10,
+    'King': 10,
+    'Ace': 11
+    }
 
 # Define the card class
 class Card:
@@ -45,14 +62,16 @@ class Hand:
             self.aces -= 1
 
 # Define functions for the game
-def take_bet():
+def take_bet(balance):
     while True:
         try:
             bet = int(input('How many chips would you like to bet? '))
-            if bet > 0:
-                return bet
-            else:
+            if bet <= 0:
                 print('Bet must be greater than 0.')
+            elif bet > balance:
+                print(f'Sorry, your bet cannot exceed your balance. {balance}')
+            else:
+                return bet
         except ValueError:
             print('Please enter a valid number.')
 
@@ -86,28 +105,8 @@ def show_all(player, dealer):
     print("\nPlayer's Hand:", *player.cards, sep='\n ')
     print("Player's Hand =", player.value)
 
-def player_busts(player, dealer, chips):
-    print("Player busts!")
-    chips -= bet
-
-def player_wins(player, dealer, chips):
-    print("Player wins!")
-    chips += bet
-
-def dealer_busts(player, dealer, chips):
-    print("Dealer busts!")
-    chips += bet
-
-def dealer_wins(player, dealer, chips):
-    print("Dealer wins!")
-    chips -= bet
-
-def push(player, dealer):
-    print("Dealer and Player tie! It's a push.")
-
 # Game logic
 while True:
-    print("Welcome to Blackjack!")
     deck = Deck()
     deck.shuffle()
 
@@ -119,8 +118,8 @@ while True:
     dealer_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
 
-    chips = 100  # Player starts with 100 chips
-    bet = take_bet()
+    chips = int(logged_user['balance'])
+    bet = take_bet(chips)
 
     show_some(player_hand, dealer_hand)
 
@@ -129,23 +128,33 @@ while True:
         hit_or_stand(deck, player_hand)
         show_some(player_hand, dealer_hand)
         if player_hand.value > 21:
-            player_busts(player_hand, dealer_hand, chips)
+            print("Player busts!")
+            chips -= bet
             break
 
     if player_hand.value <= 21:
-        while dealer_hand.value < 17:
+        while dealer_hand.value < 21 and dealer_hand.value < player_hand.value:
             hit(deck, dealer_hand)
         show_all(player_hand, dealer_hand)
+
         if dealer_hand.value > 21:
-            dealer_busts(player_hand, dealer_hand, chips)
+            print("Dealer busts!")
+            chips += bet
+
         elif dealer_hand.value > player_hand.value:
-            dealer_wins(player_hand, dealer_hand, chips)
+            print("Dealer wins!")
+            chips -= bet
+
         elif dealer_hand.value < player_hand.value:
-            player_wins(player_hand, dealer_hand, chips)
+            print("Player wins!")
+            chips += bet
+
         else:
-            push(player_hand, dealer_hand)
+            print("Dealer and Player tie! It's a push.")
 
     print(f"\nPlayer's total chips: {chips}")
+    update_balance(logged_user['username'], chips)
+
     new_game = input("Would you like to play another hand? Enter 'y' or 'n': ")
     if new_game[0].lower() == 'n':
         print("Thanks for playing!")

@@ -5,3 +5,4 @@ venv
 *.mp3
 perspective
 test.py
+__pycache__
