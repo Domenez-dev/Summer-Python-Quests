@@ -6,3 +6,4 @@ venv
 perspective
 test.py
 __pycache__
+definitions.json
