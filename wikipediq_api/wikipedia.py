@@ -1,18 +1,39 @@
 import wikipediaapi
 import json
 import os
+from spellchecker import SpellChecker
+from colorama import Fore, Style, init
 
-def get_wikipedia_definition(term, language='en'):
+# Initialize colorama
+init(autoreset=True)
+
+def get_wikipedia_definition(term, lang='en'):
     user_agent = 'PythonSummerQuests (Zakaria@gmail.com)'
-    wiki_wiki = wikipediaapi.Wikipedia(user_agent, language)
+    wiki_wiki = wikipediaapi.Wikipedia(user_agent, lang)
     page = wiki_wiki.page(term)
+    
+    if not page.exists():
+        print(f"{Fore.RED}Sorry, the term '{term}' was not found.")
+        spell = SpellChecker()
+        corrected = spell.correction(term)
+        if corrected:
+            choice = input(f"{Fore.YELLOW}Did you mean: {corrected}? (y/n) ").strip().lower()
+            if choice == 'y':
+                return get_wikipedia_definition(corrected, lang)
+        return None
 
-    if page.exists():
-        # Get only the first paragraph
-        first_paragraph = page.summary.split('\n', 1)[0]
-        return first_paragraph
-    else:
-        return f"Sorry, the term '{term}' does not have a definition on Wikipedia in {language}."
+    text = page.text
+    if f"may refer to" in text.split('\n')[0]:
+        # Print the full text if it's a disambiguation page
+        print(text)
+        return text
+
+    # Extract the first paragraph
+    first_paragraph = text.split('\n')[0]
+    print(f"{Fore.GREEN}{term}:") 
+    
+    print(first_paragraph.strip())
+    return first_paragraph
 
 def save_definition(term, definition, filename='definitions.json'):
     try:
@@ -48,8 +69,7 @@ if __name__ == "__main__":
         
         language = input("Enter language code (default is 'en'): ") or 'en'
         definition = get_wikipedia_definition(term, language)
-        print(definition)
-        
+    
         save_option = input("Do you want to save this definition? (y/n): ").lower()
         if save_option == 'y':
             save_definition(term, definition)
