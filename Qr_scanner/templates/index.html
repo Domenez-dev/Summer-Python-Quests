@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator and Scanner</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        #camera-feed {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #qr-result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator and Scanner</h1>
+    
+    <!-- Form to generate QR code -->
+    <h2>Generate QR Code</h2>
+    <form action="/generate" method="POST">
+        <label for="data">Enter Data:</label>
+        <input type="text" id="data" name="data" required>
+        <button type="submit">Generate</button>
+    </form>
+    {% if img_str %}
+        <h3>Generated QR Code:</h3>
+        <img src="data:image/png;base64,{{ img_str }}" alt="QR Code">
+    {% endif %}
+    
+    <!-- Form to scan QR code -->
+    <h2>Scan QR Code</h2>
+    <form action="/scan" method="POST" enctype="multipart/form-data">
+        <label for="qrfile">Upload QR Code Image:</label>
+        <input type="file" id="qrfile" name="qrfile" accept="image/*" required>
+        <button type="submit">Scan</button>
+    </form>
+    {% if decoded_data %}
+        <h3>Scanned Data:</h3>
+        <ul>
+            {% for data in decoded_data %}
+                <li>{{ data }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <!-- Camera to scan QR code -->
+    <h2>Scan QR Code with Camera</h2>
+    <div class="button-group">
+        <button id="start-camera">Start Camera</button>
+        <button id="stop-camera">Stop Camera</button>
+    </div>
+    <div>
+        <img id="camera-feed" width="640" height="480" style="display:none;">
+        <div id="qr-result"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#start-camera').click(function(){
+                $.post('/start_camera', function(data){
+                    if (data.status == "Camera started") {
+                        $('#camera-feed').attr("src", "/video_feed").show();
+                    }
+                });
+            });
+
+            $('#stop-camera').click(function(){
+                $.post('/stop_camera', function(data){
+                    if (data.status == "Camera stopped") {
+                        $('#camera-feed').hide();
+                    }
+                });
+            });
+
+            function fetchCapturedData() {
+                $.get('/get_captured_data', function(data){
+                    if (data.data) {
+                        $('#qr-result').text(`Captured QR code data: ${data.data}`);
+                        $('#camera-feed').hide();
+                    } else {
+                        setTimeout(fetchCapturedData, 1000);
+                    }
+                });
+            }
+
+            $('#camera-feed').on('load', function(){
+                fetchCapturedData();
+            });
+        });
+    </script>
+</body>
+</html>
