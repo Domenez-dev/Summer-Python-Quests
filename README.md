@@ -12,6 +12,8 @@ The repository includes the following projects:
 | [**Tic-Tac-Toe**](tictactoe/README.md) | A simple command-line Tic-Tac-Toe game. |
 | [**YouTube Downloader**](youtube_downloader/README.md) | Downloads videos from YouTube using a URL. |
 | [**Black Jack Game**](Black_Jack/README.md) | Play the famous casino game Black Jack with Python. |
+| [**Wikipedia Terms Definitions**](wikipedia_api/README.md) | Retrieve and save Wikipedia definitions. |
+| [**Qr code Generator and scanner**](Qr_scanner/README.md) | Generate and scan QR codes using a web interface and your device's camera. |
 
 ## Future Projects
 - Terms Definitions From Wikipedia
