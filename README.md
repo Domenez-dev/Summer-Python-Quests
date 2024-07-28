@@ -16,9 +16,6 @@ The repository includes the following projects:
 | [**Qr code Generator and scanner**](Qr_scanner/README.md) | Generate and scan QR codes using a web interface and your device's camera. |
 
 ## Future Projects
-- Terms Definitions From Wikipedia
-- qr code interactor (Create, Read)
-- spell checker
 - Content Aggregator with Django
 
 ## Getting Started

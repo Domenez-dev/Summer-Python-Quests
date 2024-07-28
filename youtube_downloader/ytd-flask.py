@@ -47,6 +47,14 @@ def download_video():
         return send_file(os.path.join(download_path, stream.default_filename), as_attachment=True)
     except Exception as e:
         return f"Failed to download video: {e}"
+    
+@app.route('/Download_page')
+def Download_page():
+    url = "https://www.youtube.com/watch?v=tb8gHvYlCFs"
+    title = "Python Requests Tutorial: Request Web Pages, Download Images, POST Data, Read JSON, and More"
+    thumbnail_url = "https://i.ytimg.com/vi/tb8gHvYlCFs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBo-ixiJbP4556pfBZ6UiFhmYrDWg"
+    resolutions = [1080, 720, 480, 360, 240, 144]
+    return render_template('details.html', thumbnail_url=thumbnail_url, title=title, resolutions=resolutions, url=url)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -20,7 +20,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 500px;
+            max-width: 700px;
             width: 100%;
         }
         h1 {
@@ -45,7 +45,7 @@
             border-radius: 4px;
         }
         button {
-            background-color: #007bff;
+            background-color: #e54138;
             color: white;
             border: none;
             cursor: pointer;
@@ -57,10 +57,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Video Details</h1>
-        <img src="{{ thumbnail_url }}" alt="Thumbnail" width="200">
-        <h2>{{ title }}</h2>
-        <form action="/download_video" method="post">
+        <h1>Download the video</h1>
+        <div style="display:flex;">
+            <img src="{{ thumbnail_url }}" alt="Thumbnail" width="40%">
+            <a href="{{ url }}"><h2 style="padding:10px; color:black;">{{ title }}</h2></a>
+        </div>
+            <form action="/download_video" method="post">
             <input type="hidden" name="url" value="{{ url }}">
             <label for="resolution">Select Resolution:</label>
             <select id="resolution" name="resolution">
@@ -69,10 +71,14 @@
                 {% endfor %}
             </select>
             <label>Select Format:</label>
-            <label for="mp4">MP4</label>
-            <input type="radio" id="mp4" name="format" value="mp4" checked>
-            <label for="mp3">MP3</label>
-            <input type="radio" id="mp3" name="format" value="mp3">
+            <div style="display:flex;">
+                <label for="mp4">MP4</label>
+                <input type="radio" id="mp4" name="format" value="mp4" checked>
+            </div>
+            <div style="display:flex;">
+                <label for="mp3">MP3</label>
+                <input type="radio" id="mp3" name="format" value="mp3">
+            </div>
             <button type="submit">Download</button>
         </form>
     </div>
